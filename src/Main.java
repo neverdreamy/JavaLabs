@@ -33,7 +33,24 @@ public class Main {
 // выделено с запасом, и они могут быть не
 // использованы все
                 break;
-        System.out.println("Всего хорошего!");
+        System.out.println("Посчитаем, сколько продуктов каждого типа мы съели на завтрак.");
+        int AppleType = 0, CheeseType = 0, IceCreamType = 0;
+        for(Food item: breakfast) // считаем, сколько чего было съедено на завтрак
+        {
+            if(item == null) {
+                break;
+            }
+            if(item.name.equals("Яблоко")) {
+                AppleType++;
+            }
+            if(item.name.equals("Сыр")) {
+                CheeseType++;
+            }
+            if(item.name.equals("Мороженое")) {
+                IceCreamType++;
+            }
+        }
+        System.out.println("На завтрак вы съели "+AppleType+" яблок, "+CheeseType+" кусков сыра, "+IceCreamType+" мороженых.");
     }
 }
 
