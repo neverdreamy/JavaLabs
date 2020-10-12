@@ -10,9 +10,17 @@ public class Main {
             if (parts[0].equals("IceCream")) {
 // У мороженого – 1 параметр, который находится в parts[1]
                 breakfast[itemsSoFar] = new IceCream(parts[1]);
-// ... Продолжается анализ других продуктов для завтрака
-                itemsSoFar++;
             }
+            if (parts[0].equals("Cheese")) {
+// У сыра дополнительных параметров нет
+                breakfast[itemsSoFar] = new Cheese();
+            } else
+            if (parts[0].equals("Apple")) {
+// У яблока – 1 параметр, который находится в parts[1]
+                breakfast[itemsSoFar] = new Apple(parts[1]);
+            }
+// ... Продолжается анализ других продуктов для завтрака
+            itemsSoFar++;
         }
 // Перебор всех элементов массива
         for (Food item: breakfast)
@@ -70,3 +78,56 @@ class IceCream extends Food {
             return super.toString() + " с сиропом '" + sirup.toUpperCase() + "'";
         }
     }
+
+class Apple extends Food {
+    // Новое внутреннее поле данных РАЗМЕР
+    private String size;
+    public Apple(String size) {
+// Вызвать конструктор предка, передав ему имя класса
+        super("Яблоко");
+// Инициализировать размер яблока
+        this.size = size;
+    }
+    // Переопределить способ употребления яблока
+    public void consume() {
+        System.out.println(this + " съедено");
+    }
+    // Селектор для доступа к полю данных РАЗМЕР
+    public String getSize() {
+        return size;
+    }
+    // Модификатор для изменения поля данных РАЗМЕР
+    public void setSize(String size) {
+        this.size = size;
+    }
+    // Переопределѐнная версия метода equals(), которая при сравнении
+// учитывает не только поле name (Шаг 1), но и проверяет совместимость
+// типов (Шаг 2) и совпадение размеров (Шаг 3)
+    public boolean equals(Object arg0) {
+        if (super.equals(arg0)) { // Шаг 1
+            if (!(arg0 instanceof Apple)) return false; // Шаг 2
+            return size.equals(((Apple)arg0).size); // Шаг 3
+        } else
+            return false;
+    }
+    // Переопределѐнная версия метода toString(), возвращающая не только
+// название продукта, но и его размер
+    public String toString() {
+        return super.toString() + " размера '" + size.toUpperCase() + "'";
+    }
+}
+
+class Cheese extends Food {
+    public Cheese() {
+        super("Сыр");
+    }
+    public void consume() {
+        System.out.println(this + " съеден");
+    }
+// Переопределять метод equals() в данном классе не нужно, т.к. он
+// не добавляет новых полей данных, а сравнение по внутреннему полю name
+// уже реализовано в базовом классе
+// Переопределять метод toString() в данном классе не нужно, т.к. он
+// не добавляет внутренних полей данных, а возврат поля name уже
+// реализован в версии toString() базового класса
+}
