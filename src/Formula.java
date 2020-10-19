@@ -8,15 +8,18 @@ public class Formula {
     public Double calculate2(Double x, Double y, Double z) {
         return Math.pow(Math.sin(Math.pow(z,y)),2)/Math.pow(1+Math.pow(x,3),0.5);
     }
+    //Получение доступа к приватному полю sum
     public Double Get() {
         return sum;
     }
     public void Set(Double x) {
         sum = x;
     }
+    //Прибавление результата к сумме
     public void Sum(Double result) {
         sum += result;
     }
+    //Конструктор по умолчанию
     public Formula() {
         sum = 0.0;
     }
