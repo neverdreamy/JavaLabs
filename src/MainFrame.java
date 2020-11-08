@@ -40,6 +40,7 @@ public class MainFrame extends JFrame {
 // манипулировать из разных мест
     private JMenuItem saveToTextMenuItem;
     private JMenuItem saveToGraphicsMenuItem;
+    private JMenuItem HelpItem;
     private JMenuItem searchValueMenuItem;
     // Поля ввода для считывания значений переменных
     private JTextField textFieldFrom;
@@ -74,6 +75,10 @@ public class MainFrame extends JFrame {
         JMenu tableMenu = new JMenu("Таблица");
 // Добавить его в главное меню
         menuBar.add(tableMenu);
+// Создать пункт меню "Справка"
+        JMenu helpMenu = new JMenu("Справка");
+// Добавить его в главное меню
+        menuBar.add(helpMenu);
 // Создать новое "действие" по сохранению в текстовый файл
         Action saveToTextAction = new AbstractAction("Сохранить в текстовый файл") {
         public void actionPerformed(ActionEvent event) {
@@ -116,8 +121,18 @@ saveToTextMenuItem.setEnabled(false);
                 fileChooser.getSelectedFile());
     }
 };
+        Action aboutAction = new AbstractAction("О программе") {
+            public void actionPerformed(ActionEvent event) {
+// Показать диалоговое окно
+                JOptionPane.showMessageDialog(MainFrame.this, "Дунаев, 10 группа");
+            }
+        };
+// Добавить соответствующий пункт подменю в меню "Справка"
+        HelpItem = helpMenu.add(aboutAction);
+// По умолчанию пункт меню является недоступным(данных ещѐ нет)
+        HelpItem.setEnabled(true);
 // Добавить соответствующий пункт подменю в меню "Файл"
-saveToGraphicsMenuItem = fileMenu.add(saveToGraphicsAction);
+        saveToGraphicsMenuItem = fileMenu.add(saveToGraphicsAction);
 // По умолчанию пункт меню является недоступным(данных ещѐ нет)
         saveToGraphicsMenuItem.setEnabled(false);
 // Создать новое действие по поиску значений многочлена
