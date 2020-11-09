@@ -24,8 +24,8 @@ public class GornerTableModel extends AbstractTableModel {
         return step;
     }
     public int getColumnCount() {
-// В данной модели два столбца
-        return 2;
+// В данной модели 3 столбца
+        return 3;
     }
     public int getRowCount() {
 // Вычислить количество точек между началом и концом отрезка
@@ -34,18 +34,33 @@ public class GornerTableModel extends AbstractTableModel {
     }
     public Object getValueAt(int row, int col) {
 // Вычислить значение X как НАЧАЛО_ОТРЕЗКА + ШАГ*НОМЕР_СТРОКИ
-        double x = from + step*row;
-        if (col==0) {
+        double x = from + step * row;
+        Double result;
+        if (col == 0) {
 // Если запрашивается значение 1-го столбца, то это X
             return x;
         } else {
-// Если запрашивается значение 2-го столбца, то это значение
-// многочлена
-            Double result = 0.0;
-// Вычисление значения в точке по схеме Горнера.
-// Вспомнить 1-ый курс и реализовать
-// ...
-            return result;
+// Если запрашивается значение 2-го столбца, то это значение многочлена
+            if (col == 1) {
+                result = coefficients[0];
+                for (int i = 0; i < coefficients.length - 1; i++) {
+                    result = result * x + coefficients[i + 1];
+                }
+                return result;
+            } else {
+// 3-й столбец
+                result = coefficients[0];
+                String resultString;
+                for (int i = 0; i < coefficients.length - 1; i++) {
+                    result = result * x + coefficients[i + 1];
+                }
+                if (Math.abs((result.intValue()+1) % 2) == 0) {
+                    resultString = "чет";
+                } else {
+                    resultString = "нечет";
+                }
+                return resultString;
+            }
         }
     }
     public String getColumnName(int col) {
@@ -53,13 +68,19 @@ public class GornerTableModel extends AbstractTableModel {
             case 0:
 // Название 1-го столбца
                 return "Значение X";
-            default:
+            case 1:
 // Название 2-го столбца
                 return "Значение многочлена";
+            default:
+// Название 3-го столбца
+                return "Целая часть четная";
         }
     }
     public Class<?> getColumnClass(int col) {
-// И в 1-ом и во 2-ом столбце находятся значения типа Double
-        return Double.class;
+        if (col!=2) {
+            return Double.class;
+        } else {
+            return String.class;
+        }
     }
 }

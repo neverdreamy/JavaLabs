@@ -129,7 +129,7 @@ saveToTextMenuItem.setEnabled(false);
         };
 // Добавить соответствующий пункт подменю в меню "Справка"
         HelpItem = helpMenu.add(aboutAction);
-// По умолчанию пункт меню является недоступным(данных ещѐ нет)
+// По умолчанию пункт меню является доступным
         HelpItem.setEnabled(true);
 // Добавить соответствующий пункт подменю в меню "Файл"
         saveToGraphicsMenuItem = fileMenu.add(saveToGraphicsAction);
