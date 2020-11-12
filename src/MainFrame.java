@@ -213,7 +213,7 @@ public void actionPerformed(ActionEvent event) {
         new Double(hboxRange.getMaximumSize().getWidth()).intValue(),
         new Double(hboxRange.getMinimumSize().getHeight()).intValue()*2));
 // Установить область в верхнюю (северную) часть компоновки
-        getContentPane().add(hboxRange, BorderLayout.NORTH);
+        getContentPane().add(hboxRange, BorderLayout.SOUTH);
 // Создать кнопку "Вычислить"
         JButton buttonCalc = new JButton("Вычислить");
 // Задать действие на нажатие "Вычислить" и привязать к кнопке
@@ -288,7 +288,7 @@ public void actionPerformed(ActionEvent ev) {
         Double(hboxButtons.getMaximumSize().getWidth()).intValue(), new
         Double(hboxButtons.getMinimumSize().getHeight()).intValue()*2));
 // Разместить контейнер с кнопками в нижней (южной) области граничной компоновки
-        getContentPane().add(hboxButtons, BorderLayout.SOUTH);
+        getContentPane().add(hboxButtons, BorderLayout.NORTH);
 // Область для вывода результата пока что пустая
         hBoxResult = Box.createHorizontalBox();
         hBoxResult.add(new JPanel());

@@ -50,16 +50,16 @@ public class GornerTableModel extends AbstractTableModel {
             } else {
 // 3-й столбец
                 result = coefficients[0];
-                String resultString;
+                Boolean resultBoolean;
                 for (int i = 0; i < coefficients.length - 1; i++) {
                     result = result * x + coefficients[i + 1];
                 }
                 if (Math.abs((result.intValue()+1) % 2) == 0) {
-                    resultString = "чет";
+                    resultBoolean = false;
                 } else {
-                    resultString = "нечет";
+                    resultBoolean = true;
                 }
-                return resultString;
+                return resultBoolean;
             }
         }
     }
@@ -80,7 +80,7 @@ public class GornerTableModel extends AbstractTableModel {
         if (col!=2) {
             return Double.class;
         } else {
-            return String.class;
+            return Boolean.class;
         }
     }
 }
