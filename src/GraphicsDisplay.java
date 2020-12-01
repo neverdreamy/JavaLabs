@@ -11,6 +11,9 @@ import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import javax.swing.JPanel;
 @SuppressWarnings("serial")
 public class GraphicsDisplay extends JPanel {
@@ -38,7 +41,7 @@ public class GraphicsDisplay extends JPanel {
 // Сконструировать необходимые объекты, используемые в рисовании
 // Перо для рисования графика
         graphicsStroke = new BasicStroke(2.0f, BasicStroke.CAP_BUTT,
-                BasicStroke.JOIN_ROUND, 10.0f, null, 0.0f);
+                BasicStroke.JOIN_ROUND, 10.0f, new float[] { 4, 1, 4, 1, 4, 1, 1, 1, 1, 1, 1 } , 0.0f);
 // Перо для рисования осей координат
         axisStroke = new BasicStroke(2.0f, BasicStroke.CAP_BUTT,
                 BasicStroke.JOIN_MITER, 10.0f, null, 0.0f);
@@ -177,25 +180,48 @@ minY
     protected void paintMarkers(Graphics2D canvas) {
 // Шаг 1 - Установить специальное перо для черчения контуров маркеров
         canvas.setStroke(markerStroke);
-// Выбрать красный цвета для контуров маркеров
-        canvas.setColor(Color.RED);
-// Выбрать красный цвет для закрашивания маркеров внутри
-        canvas.setPaint(Color.RED);
-// Шаг 2 - Организовать цикл по всем точкам графика
-        for (Double[] point: graphicsData) {
+        canvas.setColor(Color.MAGENTA);
+        canvas.setPaint(Color.MAGENTA);
+        for (Double[] point : graphicsData) {
 // Инициализировать эллипс как объект для представления маркера
-            Ellipse2D.Double marker = new Ellipse2D.Double();
-/* Эллипс будет задаваться посредством указания координат
-его центра
+            int size=5;
+            Rectangle2D.Double marker = new Rectangle2D.Double();
+            Point2D.Double center = xyToPoint(point[0], point[1]);
+            //line.setLine();
+// Угол прямоугольника - отстоит на расстоянии (3,3)
+            Point2D.Double corner = shiftPoint(center, size, size);
+// Задать эллипс по центру и диагонали
+            marker.setFrameFromDiagonal(shiftPoint(center, -size, -size), corner);
+            Line2D.Double line = new Line2D.Double(shiftPoint(center, -size, -size), shiftPoint(center, size, size));
+            Boolean highervalue = true;
+            DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance();
+            formatter.setMaximumFractionDigits(2);
+            DecimalFormatSymbols dottedDouble = formatter.getDecimalFormatSymbols();
+            dottedDouble.setDecimalSeparator('.');
+            formatter.setDecimalFormatSymbols(dottedDouble);
+            String temp = formatter.format(Math.abs(point[1]));
+            temp = temp.replace(".", "");
+            System.out.println(temp);
+            int tempcompare;
+            for(int i = 0; i<temp.length()-1;i++) {
+
+                if (temp.charAt(i) != 46 && (int)temp.charAt(i)>(int)temp.charAt(i+1)) {
+                    highervalue = false;
+                    break;
+                }
+            }
+            if (highervalue) {
+                canvas.setColor(Color.BLACK);
+            }
+            canvas.draw(line);
+            line.setLine(shiftPoint(center, size, -size), shiftPoint(center, -size, size));
+            canvas.draw(line);
+            canvas.draw(marker); // Начертить контур маркера
+            canvas.setColor(Color.MAGENTA);
+/* Эллипс будет задаваться посредством указания координат его центра
 и угла прямоугольника, в который он вписан */
 // Центр - в точке (x,y)
-            Point2D.Double center = xyToPoint(point[0], point[1]);
-// Угол прямоугольника - отстоит на расстоянии (3,3)
-            Point2D.Double corner = shiftPoint(center, 3, 3);
-// Задать эллипс по центру и диагонали
-            marker.setFrameFromCenter(center, corner);
-            canvas.draw(marker); // Начертить контур маркера
-            canvas.fill(marker); // Залить внутреннюю область маркера
+
         }
     }
     // Метод, обеспечивающий отображение осей координат
@@ -242,6 +268,10 @@ minY
             canvas.drawString("y", (float)labelPos.getX() + 10,
                     (float)(labelPos.getY() - bounds.getY()));
         }
+        Rectangle2D centerBounds = axisFont.getStringBounds("0", context);
+        Point2D.Double centerLabelPos = xyToPoint(0, 0);
+        canvas.drawString("0", (float)centerLabelPos.getX() + 10,
+                (float)(centerLabelPos.getY() - centerBounds.getY()));
 // Определить, должна ли быть видна ось X на графике
         if (minY<=0.0 && maxY>=0.0) {
 // Она должна быть видна, если верхняя граница показываемой области (maxX) >= 0.0,

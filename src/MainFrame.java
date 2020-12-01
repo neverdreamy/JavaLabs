@@ -107,18 +107,19 @@ Double.SIZE/8 байт;
 * Так как числа записываются парами, то число пар меньше в
 2 раза
 */
-        Double[][] graphicsData = new
-        Double[in.available()/(Double.SIZE/8)/2][];
+    Double[][] graphicsData = new
+            Double[in.available()/(Double.SIZE/8)/4][];
 // Шаг 3 - Цикл чтения данных (пока в потоке есть данные)
-        int i = 0;
-        while (in.available()>0) {
+    int i = 0;
+    while (in.available()>0) {
 // Первой из потока читается координата точки X
         Double x = in.readDouble();
 // Затем - значение графика Y в точке X
         Double y = in.readDouble();
+        in.skipBytes(2*(Double.SIZE/8));
 // Прочитанная пара координат добавляется в массив
         graphicsData[i++] = new Double[] {x, y};
-        }
+    }
 // Шаг 4 - Проверка, имеется ли в списке в результате чтения хотя бы одна пара координат
         if (graphicsData!=null && graphicsData.length>0) {
 // Да - установить флаг загруженности данных
